@@ -3,10 +3,10 @@ import { BookType } from "@/app/types/types";
 import Image from "next/image";
 import React from "react";
 
-const DetailBook = async ({ params }: { params: { id: string } }) => {
+const DetailBook = async ({ params }: { params: Promise<{ id: string }> } ) => {
   
   // asynchronous access of `params.id`.
-  const { id } = await params;
+  const id = (await params).id 
   const book: BookType = await getDetailBook(id);
 
   return (
