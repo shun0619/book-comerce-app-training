@@ -1,11 +1,10 @@
-import { getProviders } from "next-auth/react";
+import { ClientSafeProvider, getProviders } from "next-auth/react";
 import SignInButton from "./loginpage";
 
 // eslint-disable-next-line @next/next/no-async-client-component
 async function Login() {
 
   const providers = await getProviders().then((res) => {
-
     return res;
   });
 
@@ -15,14 +14,14 @@ async function Login() {
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             アカウントにログイン
-          </h2> 
+          </h2>
         </div>
         <div className="mt-8 space-y-6">
           {providers &&
-            Object.values(providers).map((provider) => {
+            Object.values(providers).map((provider: ClientSafeProvider) => {
               return (
                 <div key={provider.id} className="text-center">
-                  <SignInButton provider />
+                  <SignInButton provider={provider} />
                 </div>
               )
             })}

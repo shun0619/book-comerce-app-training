@@ -3,7 +3,7 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
 
   
   const { title, price, bookId, userId, imgUrl } = await request.json();
@@ -34,7 +34,11 @@ export async function POST(request: Request, response: Response) {
     });
 
     return NextResponse.json({ checkout_url: session.url });
-  } catch (err: any) {
-    return NextResponse.json(err.message);
+  } catch (err: unknown) { // 型をunknownに指定
+    if (err instanceof Error) {
+      return NextResponse.json({ message: err.message });
+    }
+    // エラーがオブジェクトや文字列である場合に備える
+    return NextResponse.json({ message: String(err) });
   }
 }
